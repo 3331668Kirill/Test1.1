@@ -5,7 +5,7 @@ import DataGrid, {
     Paging,
     FilterRow, Button, Editing,
 } from 'devextreme-react/data-grid';
-import {postsAPI, TypeState, TypeValidatingForm} from "../../utils/api";
+import {postsAPI, TypeState, TypeValidatingForm, TypeValidatingFormDelete} from "../../utils/api";
 
 
 export default function Main() {
@@ -13,18 +13,27 @@ export default function Main() {
     const [data, setData] = useState<TypeState[]>([])
     const [error, setError] = useState<string>('')
 
+    const err = (err: any) => {
+        console.error(err)
+        setError("Server error, try again later")
+    }
     useEffect(() => {
         postsAPI.getPosts()
             .then(data => setData(data.data))
-            .catch(err => {
-                console.error(err)
-                setError("Server error, try again later")
-            })
+            .catch(err)
     }, [])
 
     const addNewPost = (e: TypeValidatingForm) => {
-        postsAPI.addPosts(e)
-            .then(res=> console.log(res))
+        let post = JSON.stringify(e.newData)
+        postsAPI.addPosts(post)
+            .then(res => console.log(res))
+            .catch(err)
+    }
+
+    const deletePost = (e: TypeValidatingFormDelete) => {
+        postsAPI.deletePost(e.data.id)
+            .then(res => console.log(res))
+            .catch(err)
     }
 
     return (
@@ -36,11 +45,11 @@ export default function Main() {
                     dataSource={data}
                     className={'dx-card wide-card'}
                     id="grid"
+                    onRowRemoved={deletePost}
                     onRowValidating={addNewPost}
-                    keyExpr={"userId"}
+                    keyExpr={"id"}
                     showBorders={true}
                 >
-
                     <Paging defaultPageSize={5}/>
                     <Pager showPageSizeSelector={true} showInfo={true}/>
                     <FilterRow visible={true}/>
@@ -55,14 +64,13 @@ export default function Main() {
                     <Column type="buttons" width={130}>
                         <Button visible={true} name="edit"/>
                         <Button visible={true} name="delete"/>
-
                     </Column>
 
                     <Column dataField={'id'} width={70}/>
                     <Column
                         dataField={'userId'}
                         width={80}
-                        key={'userId'}
+                        key={'id'}
                     />
                     <Column
                         dataField={'title'}

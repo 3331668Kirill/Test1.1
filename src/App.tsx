@@ -1,5 +1,4 @@
 import React from 'react';
-import './App.css';
 import Main from "./components/main/main";
 import Footer from "./components/footer/footer";
 import 'devextreme/dist/css/dx.common.css';
@@ -11,7 +10,7 @@ import {useScreenSizeClass} from "./utils/media-query";
 
 function App() {
 
-    const screenSizeClass = useScreenSizeClass();
+    const screenSizeClass:string = useScreenSizeClass();
   return (<>
       <div className={`app ${screenSizeClass}`}>
         <Main/>

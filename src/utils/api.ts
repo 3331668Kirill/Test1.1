@@ -1,6 +1,7 @@
 import axios, {AxiosResponse} from 'axios'
 import DevExpress from "devextreme/bundles/dx.all";
 
+
 const instance = axios.create({
         baseURL: 'https://jsonplaceholder.typicode.com/',
         headers: {
@@ -14,9 +15,11 @@ export const postsAPI = {
     getPosts() {
         return instance.get<TypeState[]>('posts');
     },
-    addPosts(post: TypeValidatingForm) {
-        return instance.post<{ post: TypeValidatingForm }, AxiosResponse<ResponseType>>('posts', {post});
-
+    addPosts(post: string) {
+        return instance.post<{ post: string }, AxiosResponse<ResponseType>>('posts', post);
+    },
+    deletePost(id:number) {
+        return instance.delete<ResponseType>(`posts/${id}`)
     }
 }
 
@@ -47,4 +50,13 @@ type ResponseType = {
     id: number
     title: string
     body: string
+}
+
+export type TypeValidatingFormDelete = {
+    component?: DevExpress.ui.dxDataGrid;
+    element?: DevExpress.core.dxElement;
+    model?: any;
+    data?: any;
+    key?: any;
+    error?: Error
 }

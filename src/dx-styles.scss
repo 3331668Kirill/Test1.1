@@ -12,10 +12,14 @@ $base-border-radius: 4px;
   width: 100%;
 }
 
-.side-nav-outer-toolbar .dx-drawer {
-  height: calc(100% - 56px)
+.footer {
+  text-align: center;
+  background-color: papayawhip;
 }
-
+.dx-datagrid .dx-link {
+  cursor: pointer;
+  color: #ea1405;
+}
 .app .content {
   line-height: 1.5;
 
@@ -60,6 +64,7 @@ $base-border-radius: 4px;
   border-right: 0;
   border-left: 0;
 }
+
 
 .with-footer > .dx-scrollable-wrapper >
 .dx-scrollable-container > .dx-scrollable-content {
